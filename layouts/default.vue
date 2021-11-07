@@ -103,8 +103,8 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          title: 'API Selector',
+          to: '/api-selector'
         }
       ],
       miniVariant: false,
