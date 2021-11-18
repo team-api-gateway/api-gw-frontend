@@ -6,15 +6,23 @@
           API Selector
         </v-card-title>
         <v-card-text>
-          <div id="api-selector-app">
+          <v-expansion-panels id="api-selector-app">
             <template
               v-for="api in apiList">
-              <div :key="api.id">
-                <input type="checkbox"/>
-                <span>{{ api.name }}</span>
-              </div>
+              <v-expansion-panel :key="api.id">
+                <v-expansion-panel-header  @click.native="expandApi(api)">
+                  <v-checkbox
+                    :label=api.title
+                    @click.native="checkApi($event)"
+                  ></v-checkbox>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <!--todo: somehow display api.data (once it is loaded)-->
+                  Endpoints
+                </v-expansion-panel-content>
+              </v-expansion-panel>
             </template>
-          </div>
+           </v-expansion-panels>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -30,13 +38,23 @@
 </template>
 <script>
 export default {
+  async asyncData({ $axios }) {
+    const apiList = await $axios
+      .$get('http://localhost:8080/apis')
+    return { apiList };
+  },
   data() {
     return {
-      apiList: [
-        { id: 0, name: 'User Management API' },
-        { id: 1, name: 'Customer API' },
-        { id: 2, name: 'Project API' }
-      ]
+      apiList: []
+    }
+  },
+  methods: {
+    checkApi(event) {
+      event.cancelBubble = true;
+    },
+    async expandApi(api) {
+      api.data = await this.$axios
+        .$get('http://localhost:8080/apis/' + api.id);
     }
   }
 }
