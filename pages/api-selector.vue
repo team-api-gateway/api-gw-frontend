@@ -8,9 +8,9 @@
         <v-card-text>
           <v-expansion-panels id="api-selector-app">
             <template
-              v-for="api in apiList">
+              v-for="api in apiListLocalRepresentation">
               <v-expansion-panel :key="api.id">
-                <v-expansion-panel-header  @click.native="expandApi(api)">
+                <v-expansion-panel-header>
                   {{ api.title }}
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
@@ -22,13 +22,20 @@
                     <div v-else>
                       Endpoints:<br>
                       <template
-                        v-for="selection in api.data.selections">
+                        v-for="endpoint in api.endpoints">
                         <v-checkbox
-                          :label=getLabel(selection)
-                          :value=selection.checked
-                          :key=getLabel(selection)
+                          :key=getLabel(endpoint)
+                          :label=getLabel(endpoint)
+                          :value=endpoint.checked
                         ></v-checkbox>
-                        {{ getDescription(api.data, selection) }}
+                        <v-textarea
+                          :key=getLabel(endpoint)
+                          v-model="endpoint.description"
+                          label="description"
+                          rows="1"
+                          auto-grow
+                          required
+                        ></v-textarea>
                       </template>
                     </div>
                   </div>
@@ -58,7 +65,9 @@ export default {
   },
   data() {
     return {
-      apiList: []
+      apiList: [],
+      apiListLocalRepresentation: [],
+      dialog: false
     }
   },
   async fetch() {
@@ -67,24 +76,35 @@ export default {
         'http://localhost:8082/apis/' + api.id
         ).then(res => res.json());
     }
+    for (const api of this.apiList) {
+      const apiLocalRepresentation = {
+        title: api.title,
+        id: api.id,
+        endpoints: []
+      }
+      Object.entries(api.data.spec.paths).forEach(entry => {
+        const [pathKey, value] = entry;
+        Object.entries(value).forEach(entry2 => {
+          const [methodKey, value2] = entry2;
+          const endpointLocalRepresentation = {
+            path: pathKey,
+            method: methodKey,
+            description: value2.description === undefined ? "" : value2.description,
+            checked: false,
+            modified: false
+          };
+          apiLocalRepresentation.endpoints.push(endpointLocalRepresentation);
+        });
+      });
+      this.apiListLocalRepresentation.push(apiLocalRepresentation);
+    }
   },
   methods: {
     checkApi(event) {
       event.cancelBubble = true;
     },
-    async expandApi(api) {
-      api.data = await this.$axios
-        .$get('http://localhost:8082/apis/' + api.id);
-    },
     getLabel(selection) {
       return selection.method + " " + selection.path;
-    },
-    getDescription(data, selection) {
-      const description = data.spec.paths[selection.path][selection.method.toLowerCase()].description;
-      if (typeof description !== 'undefined' && description !== null){
-        return description;
-      }
-      return "no description";
     }
   }
 }
