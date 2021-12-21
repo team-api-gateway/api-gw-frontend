@@ -20,23 +20,31 @@
                       An error occurred :(
                     </p>
                     <div v-else>
-                      Endpoints:<br>
-                      <template
-                        v-for="endpoint in api.endpoints">
-                        <v-checkbox
-                          :key=getLabel(endpoint)
-                          :label=getLabel(endpoint)
-                          v-model=endpoint.checked
-                        ></v-checkbox>
-                        <v-textarea
-                          :key=getLabel(endpoint)
-                          v-model="endpoint.description"
-                          label="description"
-                          rows="1"
-                          auto-grow
-                          required
-                        ></v-textarea>
-                      </template>
+                      Endpoints:<br />
+                      <v-expansion-panels id="api-selector-app-endpoints">
+                        <template v-for="endpoint in api.endpoints">
+                          <v-expansion-panel :key="getLabel(endpoint)">
+                            <v-expansion-panel-header>
+                              <v-checkbox
+                                :key="getLabel(endpoint)"
+                                :label="getLabel(endpoint)"
+                                v-model="endpoint.checked"
+                                @click.native="checkEndpoint($event)"
+                              ></v-checkbox>
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              <v-textarea
+                                :key="getLabel(endpoint)"
+                                v-model="endpoint.description"
+                                label="description"
+                                rows="1"
+                                auto-grow
+                                required
+                              ></v-textarea>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+                        </template>
+                      </v-expansion-panels>
                     </div>
                   </div>
                   <v-card-actions>
@@ -109,8 +117,8 @@ export default {
     }
   },
   methods: {
-    checkApi(event) {
-      event.cancelBubble = true;
+    checkEndpoint(event) {
+      event.cancelBubble = true
     },
     getLabel(selection) {
       return selection.method + " " + selection.path;
