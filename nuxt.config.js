@@ -46,7 +46,11 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
+  router: {
+    middleware: ['auth']
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
@@ -72,5 +76,43 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+
+  auth: {
+    redirect: {
+      login: '/',
+      callback: '/auth'
+    },
+    strategies: {
+      github: {
+        clientId: '31029f1294788c06f566',
+        clientSecret: '823c46cd7a9f532394a04927e5f9b146dc6ee4bb'
+      },
+      aad: {
+        scheme: 'oauth2',
+        endpoints: {
+          authorization: 'https://login.microsoftonline.com/a8cea0e8-2d5f-4772-9440-2820c0ef44b9/oauth2/v2.0/authorize',
+          token: 'https://login.microsoftonline.com/a8cea0e8-2d5f-4772-9440-2820c0ef44b9/oauth2/v2.0/token',
+          userInfo: '',
+          logout: '/'
+        },
+        token: {
+          property: 'access_token',
+          type: 'Bearer',
+          maxAge: 1800
+        },
+        refreshToken: {
+          property: 'refresh_token',
+          maxAge: 60 * 60 * 24 * 30
+        },
+        responseType: 'code',
+        grantType: 'authorization_code',
+        accessType: 'offline',
+        clientId: '612291ac-20cc-43c9-bf94-3bc78c928fcf',
+        codeChallengeMethod: 'S256',
+        scope: ['openid', 'profile'],
+        autoLogout: true
+      }
+    }
   }
 }
