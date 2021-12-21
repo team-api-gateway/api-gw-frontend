@@ -77,17 +77,23 @@
     </v-col>
   </v-row>
 </template>
-<script>
+<script lang="ts">
 export default {
-  async asyncData({ $axios }) {
-    const apiList = await $axios.$get('http://localhost:8082/apis')
-    return { apiList }
+  async asyncData(context: any) {
+    const apiList = await fetch('http://localhost:8082/apis').then((res) =>
+      res.json()
+    )
+    return {
+      apiList,
+      jwt_decoded: context.app.$auth.$storage.getUniversal('jwt_decoded'),
+    }
   },
   data() {
     return {
       apiList: [],
       apiListLocalRepresentation: [],
       dialog: false,
+      jwt_decoded: undefined,
     }
   },
   async fetch() {
@@ -136,7 +142,7 @@ export default {
           paths: {},
         },
         selections: [],
-        username: 'todo',
+        username: this.jwt_decoded.name,
       }
       for (const endpoint of api.endpoints) {
         requestBody.selections.push({
