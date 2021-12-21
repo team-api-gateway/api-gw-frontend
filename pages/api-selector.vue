@@ -36,6 +36,22 @@
                                 auto-grow
                                 required
                               ></v-textarea>
+                              <p v-if="endpoint.parameters.length == 0">
+                                Endpoint has no Parameters
+                              </p>
+                              <p v-else>Parameters:</p>
+                              <template
+                                v-for="parameter in endpoint.parameters"
+                              >
+                                <v-textarea
+                                  :key="parameter.name"
+                                  v-model="parameter.description"
+                                  :label="parameter.name"
+                                  rows="1"
+                                  auto-grow
+                                  required
+                                ></v-textarea>
+                              </template>
                             </v-expansion-panel-content>
                           </v-expansion-panel>
                         </template>
@@ -95,6 +111,8 @@ export default {
             method: methodKey,
             description:
               value2.description === undefined ? '' : value2.description,
+            parameters:
+              value2.parameters === undefined ? [] : value2.parameters,
             checked: false,
             modified: false,
           }
@@ -130,6 +148,7 @@ export default {
           requestBody.spec.paths[endpoint.path] = {}
         requestBody.spec.paths[endpoint.path][endpoint.method] = {
           description: endpoint.description,
+          parameters: endpoint.parameters,
         }
       }
       console.log(requestBody)
