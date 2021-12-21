@@ -1,0 +1,27 @@
+.api-spec-name {
+    font-size: larger;
+}
+
+.endpoint-name {
+    font-size: medium;
+}
+
+.api-spec-expansion-panel .v-expansion-panel-header {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.v-input--checkbox .v-messages {
+    min-height: 0;
+}
+
+.v-input--checkbox .v-input__slot {
+    margin-bottom: 0;
+}
+
+.v-expansion-panel-header .v-input--selection-controls {
+    margin-top: 0;
+    padding-top: 0;
+}

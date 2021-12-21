@@ -2,20 +2,20 @@
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
       <v-card>
-        <v-card-title class="headline"> API Selector </v-card-title>
+        <v-card-title class="headline"> API-Specifications </v-card-title>
         <v-card-text>
           <v-expansion-panels id="api-selector-app">
             <template v-for="api in apiListLocalRepresentation">
-              <v-expansion-panel :key="api.id">
+              <v-expansion-panel :key="api.id" class="api-spec-expansion-panel">
                 <v-expansion-panel-header>
-                  {{ api.title }}
+                  <div class="api-spec-name">{{ api.title }}</div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div>
                     <p v-if="$fetchState.pending">Fetching api spec...</p>
                     <p v-else-if="$fetchState.error">An error occurred :(</p>
                     <div v-else>
-                      Endpoints:<br />
+                      <div class="endpoint-name">Endpoints</div>
                       <v-expansion-panels id="api-selector-app-endpoints">
                         <template v-for="endpoint in api.endpoints">
                           <v-expansion-panel :key="getLabel(endpoint)">
@@ -36,10 +36,10 @@
                                 auto-grow
                                 required
                               ></v-textarea>
-                              <p v-if="endpoint.parameters.length == 0">
+                              <div v-if="endpoint.parameters.length == 0">
                                 Endpoint has no Parameters
-                              </p>
-                              <p v-else>Parameters:</p>
+                              </div>
+                              <div v-else>Parameters:</div>
                               <template
                                 v-for="parameter in endpoint.parameters"
                               >
