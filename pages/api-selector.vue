@@ -63,7 +63,7 @@
                     <v-btn color="primary" @click="submit(api)">
                       Save changes
                     </v-btn>
-                    <v-dialog v-model="dialog" width="800">
+                    <v-dialog v-model="dialog[api.id]" width="800">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn color="primary" dark v-bind="attrs" v-on="on">
                           Publish API
@@ -120,8 +120,10 @@
 
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn text @click="dialog = false"> Cancel </v-btn>
-                          <v-btn color="primary" text @click="publish()">
+                          <v-btn text @click="dialog[api.id] = false">
+                            Cancel
+                          </v-btn>
+                          <v-btn color="primary" text @click="publish(api)">
                             Publish
                           </v-btn>
                         </v-card-actions>
@@ -152,7 +154,7 @@ export default {
     return {
       apiList: [],
       apiListLocalRepresentation: [],
-      dialog: false,
+      dialog: {},
       jwt_decoded: undefined,
     }
   },
@@ -228,8 +230,8 @@ export default {
         requestBody
       )
     },
-    publish() {
-      this.dialog = false
+    publish(api) {
+      this.dialog[api.id] = false
     },
   },
 }
