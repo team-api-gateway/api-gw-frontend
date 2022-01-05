@@ -23,7 +23,7 @@
     "jwt-decode": "^3.1.2",
     "nuxt": "^2.15.7",
     "vue2-collapse": "^1.0.15",
-    "vuetify": "^2.6.1"
+    "vuetify": "^2.6.2"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",
