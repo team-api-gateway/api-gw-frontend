@@ -179,7 +179,12 @@ export default {
               value2.description === undefined ? '' : value2.description,
             parameters:
               value2.parameters === undefined ? [] : value2.parameters,
-            checked: false,
+            checked: api.data.selections.find((selection: any) => {
+              return (
+                selection.path.toLowerCase() === pathKey.toLowerCase() &&
+                selection.method.toLowerCase() === methodKey.toLowerCase()
+              )
+            }).selected,
             modified: false,
           }
           apiLocalRepresentation.endpoints.push(endpointLocalRepresentation)
