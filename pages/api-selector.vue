@@ -225,6 +225,7 @@ export default {
     },
     publish(api) {
       this.dialog[api.id] = false
+      this.$axios.put('/apis/' + api.id + '/spec')
     },
   },
 }
