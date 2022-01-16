@@ -142,9 +142,7 @@
 <script lang="ts">
 export default {
   async asyncData(context: any) {
-    const apiList = await fetch('http://localhost:8082/apis').then((res) =>
-      res.json()
-    )
+    const apiList = (await context.$axios.get('/apis')).data
     return {
       apiList,
       jwt_decoded: context.app.$auth.$storage.getUniversal('jwt_decoded'),
@@ -160,9 +158,7 @@ export default {
   },
   async fetch() {
     for (const api of this.apiList) {
-      api.data = await fetch('http://localhost:8082/apis/' + api.id).then(
-        (res) => res.json()
-      )
+      api.data = (await this.$axios.get('/apis/' + api.id)).data
     }
     for (const api of this.apiList) {
       const apiLocalRepresentation = {
@@ -225,10 +221,7 @@ export default {
         }
       }
       console.log(requestBody)
-      this.$axios.post(
-        'http://localhost:8082/apis/' + api.id + '/update',
-        requestBody
-      )
+      this.$axios.post('/apis/' + api.id + '/update', requestBody)
     },
     publish(api) {
       this.dialog[api.id] = false
