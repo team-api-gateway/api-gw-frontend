@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "noImplicitAny": false,
+    "noImplicitThis": false,
     "target": "ES2018",
     "module": "ESNext",
     "moduleResolution": "Node",

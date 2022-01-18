@@ -161,16 +161,12 @@ export default {
       api.data = (await this.$axios.get('/apis/' + api.id)).data
     }
     for (const api of this.apiList) {
-      const apiLocalRepresentation = {
-        title: api.title,
-        id: api.id,
-        endpoints: [],
-      }
+      const endpoints: any[] = []
       Object.entries(api.data.spec.paths).forEach((entry) => {
-        const [pathKey, value] = entry
+        const [pathKey, value] : [string, any] = entry
         Object.entries(value).forEach((entry2) => {
-          const [methodKey, value2] = entry2
-          const endpointLocalRepresentation = {
+          const [methodKey, value2] : [string, any] = entry2
+          const endpointLocalRepresentation: any = {
             path: pathKey,
             method: methodKey,
             description:
@@ -185,10 +181,14 @@ export default {
             }).selected,
             modified: false,
           }
-          apiLocalRepresentation.endpoints.push(endpointLocalRepresentation)
+          endpoints.push(endpointLocalRepresentation)
         })
       })
-      this.apiListLocalRepresentation.push(apiLocalRepresentation)
+      this.apiListLocalRepresentation.push({
+        title: api.title,
+        id: api.id,
+        endpoints,
+      })
     }
   },
   methods: {
@@ -199,12 +199,13 @@ export default {
       return selection.method.toUpperCase() + ' ' + selection.path
     },
     submit(api) {
+      const selections: any[] = []
       const requestBody = {
         id: api.id,
         spec: {
           paths: {},
         },
-        selections: [],
+        selections,
         username: this.jwt_decoded.name,
       }
       for (const endpoint of api.endpoints) {
