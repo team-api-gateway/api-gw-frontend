@@ -54,7 +54,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: process.env.BACKEND_URL || 'http://localhost:8080'
+    baseURL: process.env.backend_url || 'http://localhost:8080'
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
