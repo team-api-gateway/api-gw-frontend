@@ -30,6 +30,9 @@
       </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <div v-if="$auth.loggedIn">
+        {{ this.$auth.$storage.getUniversal('jwt_decoded').name }}
+      </div>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -52,7 +55,7 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Login',
           to: '/',
         },
         {

@@ -83,13 +83,10 @@ export default {
   auth: {
     redirect: {
       login: '/',
-      callback: '/auth'
+      callback: '/auth',
+      home: '/api-selector'
     },
     strategies: {
-      github: {
-        clientId: '31029f1294788c06f566',
-        clientSecret: '823c46cd7a9f532394a04927e5f9b146dc6ee4bb'
-      },
       aad: {
         scheme: 'oauth2',
         endpoints: {

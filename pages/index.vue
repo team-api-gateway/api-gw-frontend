@@ -9,11 +9,14 @@
     </div>
     <div v-else>
       <h1 class="text-4xl">
-        Hi, {{ jwt_decoded.given_name }} {{ jwt_decoded.family_name }}
+        Hi, {{ this.$auth.$storage.getUniversal('jwt_decoded').given_name }}
+        {{ this.$auth.$storage.getUniversal('jwt_decoded').family_name }}
       </h1>
       <hr class="m-6" />
-      <div>email: {{ jwt_decoded.email }}</div>
-      <div>oid: {{ jwt_decoded.oid }}</div>
+      <div>
+        email: {{ this.$auth.$storage.getUniversal('jwt_decoded').email }}
+      </div>
+      <div>oid: {{ this.$auth.$storage.getUniversal('jwt_decoded').oid }}</div>
     </div>
   </div>
 </template>
