@@ -33,6 +33,9 @@
       <div v-if="$auth.loggedIn">
         {{ this.$auth.$storage.getUniversal('jwt_decoded').name }}
       </div>
+      <div v-else>
+        Not logged in
+      </div>
     </v-app-bar>
     <v-main>
       <v-container>
