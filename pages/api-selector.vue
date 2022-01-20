@@ -104,8 +104,8 @@
                         </v-btn>
                       </template>
                       <span>
-                        Sends all your changes on this API and saves them on the
-                        server.
+                        Sends all changes you made on this API to the server and
+                        saves them.
                       </span>
                     </v-tooltip>
 
