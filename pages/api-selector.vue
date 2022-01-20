@@ -60,16 +60,74 @@
                   </div>
                   <v-card-actions>
                     <v-spacer />
-                    <v-btn color="secondary" @click="fetchApiDetails(api)">
-                      Refresh
-                    </v-btn>
-                    <v-btn color="secondary" @click="revert(api)">Revert</v-btn>
-                    <v-btn color="primary" @click="submit(api)">Save</v-btn>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="endpoint-button"
+                          color="secondary"
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="fetchApiDetails(api)"
+                        >
+                          Refresh
+                        </v-btn>
+                      </template>
+                      <span>Fetches this API from the server again.</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="endpoint-button"
+                          color="secondary"
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="revert(api)"
+                        >
+                          Revert
+                        </v-btn>
+                      </template>
+                      <span>
+                        Overwrites all your changes on this API with the cached
+                        values last fetched from the server.
+                      </span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="endpoint-button"
+                          color="primary"
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="submit(api)"
+                        >
+                          Save
+                        </v-btn>
+                      </template>
+                      <span>
+                        Sends all your changes on this API and saves them on the
+                        server.
+                      </span>
+                    </v-tooltip>
+
                     <v-dialog v-model="dialog[api.id]" width="800">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                          Publish API
-                        </v-btn>
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on: tooltip }">
+                            <v-btn
+                              class="endpoint-button"
+                              color="primary"
+                              dark
+                              v-bind="attrs"
+                              v-on="{ ...tooltip, ...on }"
+                            >
+                              Publish API
+                            </v-btn>
+                          </template>
+                          <span>
+                            Opens a dialog, that allows you to publish the API
+                            on the API Gateway.
+                          </span>
+                        </v-tooltip>
                       </template>
 
                       <v-card>
