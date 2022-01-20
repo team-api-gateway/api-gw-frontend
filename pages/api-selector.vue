@@ -60,6 +60,9 @@
                   </div>
                   <v-card-actions>
                     <v-spacer />
+                    <v-btn color="secondary" @click="fetchApiDetails(api)">
+                      Refresh
+                    </v-btn>
                     <v-btn color="secondary" @click="revert(api)">Revert</v-btn>
                     <v-btn color="primary" @click="submit(api)">Save</v-btn>
                     <v-dialog v-model="dialog[api.id]" width="800">
@@ -196,6 +199,15 @@ export default {
     },
     getLabel(selection) {
       return selection.method.toUpperCase() + ' ' + selection.path
+    },
+    async fetchApiDetails(apiLocalRepresentation) {
+      const api = this.apiList.find(
+        (api) => api.id === apiLocalRepresentation.id
+      )
+      api.data = (
+        await this.$axios.get('/apis/' + apiLocalRepresentation.id)
+      ).data
+      this.revert(apiLocalRepresentation)
     },
     revert(apiLocalRepresentation) {
       const api = this.apiList.find(
