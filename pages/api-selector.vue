@@ -124,7 +124,7 @@
                             Cancel
                           </v-btn>
                           <v-btn color="primary" text @click="publish(api)">
-                            Publish
+                            Save and Publish
                           </v-btn>
                         </v-card-actions>
                       </v-card>
@@ -226,6 +226,7 @@ export default {
     },
     publish(api) {
       this.dialog[api.id] = false
+      this.submit(api)
       this.$axios.put('/apis/' + api.id + '/spec')
     },
   },
