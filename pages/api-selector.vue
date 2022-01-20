@@ -60,9 +60,8 @@
                   </div>
                   <v-card-actions>
                     <v-spacer />
-                    <v-btn color="primary" @click="submit(api)">
-                      Save changes
-                    </v-btn>
+                    <v-btn color="secondary" @click="revert(api)">Revert</v-btn>
+                    <v-btn color="primary" @click="submit(api)">Save</v-btn>
                     <v-dialog v-model="dialog[api.id]" width="800">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn color="primary" dark v-bind="attrs" v-on="on">
@@ -163,9 +162,9 @@ export default {
     for (const api of this.apiList) {
       const endpoints: any[] = []
       Object.entries(api.data.spec.paths).forEach((entry) => {
-        const [pathKey, value] : [string, any] = entry
+        const [pathKey, value]: [string, any] = entry
         Object.entries(value).forEach((entry2) => {
-          const [methodKey, value2] : [string, any] = entry2
+          const [methodKey, value2]: [string, any] = entry2
           const endpointLocalRepresentation: any = {
             path: pathKey,
             method: methodKey,
@@ -197,6 +196,26 @@ export default {
     },
     getLabel(selection) {
       return selection.method.toUpperCase() + ' ' + selection.path
+    },
+    revert(apiLocalRepresentation) {
+      const api = this.apiList.find(
+        (api) => api.id === apiLocalRepresentation.id
+      )
+      for (const endpointIndex in apiLocalRepresentation.endpoints) {
+        const endpoint = apiLocalRepresentation.endpoints[endpointIndex]
+        const value2 = api.data.spec.paths[endpoint.path][endpoint.method]
+        endpoint.description =
+          value2.description === undefined ? '' : value2.description
+        endpoint.parameters =
+          value2.parameters === undefined ? [] : value2.parameters
+        endpoint.checked = api.data.selections.find((selection: any) => {
+          return (
+            selection.path.toLowerCase() === endpoint.path.toLowerCase() &&
+            selection.method.toLowerCase() === endpoint.method.toLowerCase()
+          )
+        }).selected
+        endpoint.modified = false
+      }
     },
     submit(api) {
       const selections: any[] = []
