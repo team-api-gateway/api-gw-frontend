@@ -232,7 +232,9 @@ export default {
             description:
               value2.description === undefined ? '' : value2.description,
             parameters:
-              value2.parameters === undefined ? [] : value2.parameters,
+              value2.parameters === undefined
+                ? []
+                : JSON.parse(JSON.stringify(value2.parameters)),
             checked: api.data.selections.find((selection: any) => {
               return (
                 selection.path.toLowerCase() === pathKey.toLowerCase() &&
@@ -277,7 +279,9 @@ export default {
         endpoint.description =
           value2.description === undefined ? '' : value2.description
         endpoint.parameters =
-          value2.parameters === undefined ? [] : value2.parameters
+          value2.parameters === undefined
+            ? []
+            : JSON.parse(JSON.stringify(value2.parameters))
         endpoint.checked = api.data.selections.find((selection: any) => {
           return (
             selection.path.toLowerCase() === endpoint.path.toLowerCase() &&
