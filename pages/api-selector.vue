@@ -98,7 +98,7 @@
                           color="primary"
                           v-bind="attrs"
                           v-on="on"
-                          @click="submit(api)"
+                          @click="update(api)"
                         >
                           Save
                         </v-btn>
@@ -291,7 +291,7 @@ export default {
         endpoint.modified = false
       }
     },
-    submit(api) {
+    update(api) {
       const selections: any[] = []
       const requestBody = {
         id: api.id,
@@ -315,11 +315,11 @@ export default {
         }
       }
       console.log(requestBody)
-      this.$axios.post('/apis/' + api.id + '/update', requestBody)
+      return this.$axios.post('/apis/' + api.id + '/update', requestBody)
     },
-    publish(api) {
+    async publish(api) {
       this.dialog[api.id] = false
-      this.submit(api)
+      await this.update(api)
       this.$axios.put('/apis/' + api.id + '/spec')
     },
   },
